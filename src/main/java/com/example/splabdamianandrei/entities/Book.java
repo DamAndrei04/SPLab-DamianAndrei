@@ -1,31 +1,28 @@
 package com.example.splabdamianandrei.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-public class Book {
+@NoArgsConstructor
+public class Book{
     private String title;
-    private TableOfContents tableOfContents;
-    private List<Author> authorsList;
-    private List<Chapter> chaptersList;
+    private List<Author> authors;
+    private List<Element> elements;
 
-    public Book(String title, TableOfContents tableOfContents){
+    public Book(String title, List<Author> authors, List<Element>elements){
         this.title = title;
-        this.tableOfContents = tableOfContents;
-        this.authorsList = new ArrayList<>();
-        this.chaptersList = new ArrayList<>();
+        this.authors = authors;
+        this.elements = new ArrayList<>(elements);
     }
 
-    public void addChapter(Chapter chapter){
-        chaptersList.add(chapter);
-    }
-
-    public void addAuthor(Author author){
-        authorsList.add(author);
+    public void addData(Element element){
+        if(elements == null){
+            elements = new ArrayList<>();
+        }
+        elements.add(element);
     }
 }
