@@ -13,4 +13,8 @@ public class AbstractElement implements Element{
     public Element get(int index){
         throw new UnsupportedOperationException("Unsupported operation");
     }
+    @Override
+    public void print(){
+        System.out.println();
+    }
 }
