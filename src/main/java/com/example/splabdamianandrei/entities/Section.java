@@ -33,4 +33,12 @@ public class Section extends AbstractElement{
     public Element get(int index){
         return this.elements.get(index);
     }
+
+    @Override
+    public void print(){
+        System.out.println(this.title);
+        for(Element e : elements){
+            e.print();
+        }
+    }
 }

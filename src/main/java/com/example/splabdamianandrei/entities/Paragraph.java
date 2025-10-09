@@ -7,4 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class Paragraph extends AbstractElement {
     private String text;
+
+    public void print(){
+        System.out.println("Paragraph: " + this.text);
+    }
 }

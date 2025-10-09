@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class TableOfContents extends AbstractElement{
-
+    public void print(){}
 }

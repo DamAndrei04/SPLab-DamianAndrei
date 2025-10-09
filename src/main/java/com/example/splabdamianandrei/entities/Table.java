@@ -7,4 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class Table extends AbstractElement{
     private String title;
+
+    public void print(){}
 }
