@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Image {
-    private String imageName;
+public class Image extends AbstractElement{
+    private String url;
 }

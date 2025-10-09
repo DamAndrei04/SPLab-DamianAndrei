@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TableOfContents {
+public class TableOfContents extends AbstractElement{
 
 }

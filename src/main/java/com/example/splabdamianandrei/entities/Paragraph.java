@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Paragraph {
+public class Paragraph extends AbstractElement {
     private String text;
 }

@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Table {
+public class Table extends AbstractElement{
     private String title;
 }
