@@ -1,4 +1,4 @@
-package com.example.splabdamianandrei.entities;
+package com.example.splabdamianandrei.model.entities;
 
 public interface Element {
     void add(Element element);
