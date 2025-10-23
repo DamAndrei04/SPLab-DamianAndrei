@@ -1,6 +1,6 @@
-package com.example.splabdamianandrei.entities;
+package com.example.splabdamianandrei.model.entities;
 
-import com.example.splabdamianandrei.alignment.AlignStrategy;
+import com.example.splabdamianandrei.model.alignment.AlignStrategy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

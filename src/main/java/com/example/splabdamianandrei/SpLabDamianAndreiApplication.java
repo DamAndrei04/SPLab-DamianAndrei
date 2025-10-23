@@ -1,17 +1,43 @@
 package com.example.splabdamianandrei;
 
-import com.example.splabdamianandrei.alignment.AlignCenter;
-import com.example.splabdamianandrei.alignment.AlignLeft;
-import com.example.splabdamianandrei.alignment.AlignRight;
-import com.example.splabdamianandrei.entities.*;
+import com.example.splabdamianandrei.components.ClientComponent;
+import com.example.splabdamianandrei.components.SingletonComponent;
+import com.example.splabdamianandrei.components.TransientComponent;
+import com.example.splabdamianandrei.model.alignment.AlignCenter;
+import com.example.splabdamianandrei.model.alignment.AlignLeft;
+import com.example.splabdamianandrei.model.alignment.AlignRight;
+import com.example.splabdamianandrei.model.entities.Paragraph;
+import com.example.splabdamianandrei.model.entities.Section;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import java.util.ArrayList;
+import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
 public class SpLabDamianAndreiApplication {
 
     public static void main(String[] args) throws Exception {
+        ApplicationContext context = SpringApplication.run(SpLabDamianAndreiApplication.class, args);
+
+        TransientComponent transientBean = context.getBean(TransientComponent.class);
+        transientBean.operation();
+        transientBean = context.getBean(TransientComponent.class);
+        transientBean.operation();
+
+        SingletonComponent singletonBean = context.getBean(SingletonComponent.class);
+        singletonBean.operation();
+        singletonBean = context.getBean(SingletonComponent.class);
+        singletonBean.operation();
+
+        ClientComponent c = context.getBean(ClientComponent.class);
+        c.operation();
+
+        c = (ClientComponent) context.getBean("clientComponent");
+        c.operation();
+
+
+
+
+/*
         Section cap1 = new Section("Capitolul 1");
         Paragraph p1 = new Paragraph("Paragraph 1");
         cap1.add(p1);
@@ -31,6 +57,6 @@ public class SpLabDamianAndreiApplication {
         System.out.println();
         System.out.println("Printing with Alignment");
         System.out.println();
-        cap1.print();
+        cap1.print();*/
     }
 }
