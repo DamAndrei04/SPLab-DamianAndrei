@@ -1,12 +1,18 @@
-package com.example.splabdamianandrei.model.entities;
+package com.example.splabdamianandrei.model.entities.elements;
 
 import com.example.splabdamianandrei.model.alignment.AlignStrategy;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-public class Paragraph extends AbstractElement {
+@NoArgsConstructor
+@Entity
+public class Paragraph extends BaseElement {
     private String text;
     private AlignStrategy alignStrategy;
 

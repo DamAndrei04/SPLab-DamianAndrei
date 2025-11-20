@@ -1,4 +1,4 @@
-package com.example.splabdamianandrei.model.entities;
+package com.example.splabdamianandrei.model.entities.elements;
 
 public class AbstractElement implements Element{
     @Override
