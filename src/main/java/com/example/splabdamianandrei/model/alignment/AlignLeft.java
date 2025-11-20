@@ -1,6 +1,6 @@
 package com.example.splabdamianandrei.model.alignment;
 
-import com.example.splabdamianandrei.model.entities.Paragraph;
+import com.example.splabdamianandrei.model.entities.elements.Paragraph;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
