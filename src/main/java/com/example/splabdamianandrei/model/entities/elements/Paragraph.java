@@ -2,6 +2,7 @@ package com.example.splabdamianandrei.model.entities.elements;
 
 import com.example.splabdamianandrei.model.alignment.AlignStrategy;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,6 +15,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Paragraph extends BaseElement {
     private String text;
+
+    @Transient
     private AlignStrategy alignStrategy;
 
     public Paragraph(String text){

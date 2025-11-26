@@ -6,12 +6,15 @@ import com.example.splabdamianandrei.command.CommandExecutor;
 import com.example.splabdamianandrei.command.SynchronousCommandExecutor;
 import com.example.splabdamianandrei.command.book.*;
 import com.example.splabdamianandrei.model.entities.Book;
+import com.example.splabdamianandrei.observer.AllBookSubject;
+import com.example.splabdamianandrei.observer.SseObserver;
 import com.example.splabdamianandrei.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,13 +24,15 @@ public class BookController {
     private final BookService bookService;
     private final CommandExecutor syncExecutor;
     private final CommandExecutor asyncExecutor;
+    private final AllBookSubject allBookSubject;
 
     public BookController(BookService bookService,
                           SynchronousCommandExecutor syncExecutor,
-                          AsynchronousCommandExecutor asyncExecutor) {
+                          AsynchronousCommandExecutor asyncExecutor, AllBookSubject allBookSubject) {
         this.bookService = bookService;
         this.syncExecutor = syncExecutor;
         this.asyncExecutor = asyncExecutor;
+        this.allBookSubject = allBookSubject;
     }
 
     @GetMapping
@@ -48,8 +53,10 @@ public class BookController {
     public ResponseEntity<?> createBook(@RequestBody Book book){
         Command<Book> createBookCommand = new CreateBookCommand(bookService, book);
 
-        asyncExecutor.executeCommand(createBookCommand);
-        return ResponseEntity.accepted().build();
+        Book createdBook = asyncExecutor.executeCommand(createBookCommand);
+        allBookSubject.add(createdBook);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
     }
 
     @PutMapping("/{bookId}")
@@ -66,6 +73,20 @@ public class BookController {
         Command<Void> deleteBookCommand = new DeleteBookCommand(bookService, bookId);
         syncExecutor.executeCommand(deleteBookCommand);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @RequestMapping("/books-sse")
+    public ResponseBodyEmitter getBooksSse() {
+        final SseEmitter emitter = new SseEmitter(0L);
+        SseObserver observer = new SseObserver(emitter);
+
+        allBookSubject.attach(observer);
+
+        emitter.onCompletion(() -> allBookSubject.detach(observer));
+        emitter.onTimeout(() -> allBookSubject.detach(observer));
+        emitter.onError((e) -> allBookSubject.detach(observer));
+
+        return emitter;
     }
 
 }
