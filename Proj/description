@@ -37,15 +37,6 @@ Functionalitati:
         - GET /components/{id} – read pentru componenta specifica
         - PUT /components/{id} – update
         - DELETE /components/{id} – delete
-    Management interactiuni AI
-        - POST /ai/interactions – create
-        - GET /projects/{projectId}/ai/interactions – read all
-        - GET /ai/interactions/{id} – read pentru interactiune specifica
-        - DELETE /ai/interactions/{id} – delete
-    Management audit componente: generare automata la fiecare actiune create-update-delete
-        - GET /components/{id}/audit – read pentru o componenta specifica
-        - GET /pages/{pageId}/audit – read pentru toate componentele de pe o pagina
-        - POST /audit/{auditId}/undo – update in caz de undo
 
 
 Cod DBML pentru structura bazei de date:
@@ -88,63 +79,8 @@ Table Components {
   created_at timestamp
   updated_at timestamp
 }
-Table AIInteractions {
-  id integer [primary key, increment]
-  project_id integer
-  page_id integer
-  user_id integer
-
-  user_prompt text
-  ai_response text
-
-  operation_id varchar(255) [null]
-  components_created json []
-  components_modified json []
-  components_deleted json []
-
-  created_at timestamp
-  undone_at timestamp [null]
-}
-
-Table ComponentAudit{
-  id integer [primary key, increment]
-  component_id integer [null]
-  page_id integer
-  user_id integer
-
-  parent_id integer [null]
-  type varchar(100)
-  props json
-  styles json
-  positions json
-  events json
-
-  operation_id varchar(255) [null]
-  operation_type varchar(255) [null] //enum: manual, ai_generated, ai_modification
-
-  ai_interaction_id integer [null]
-
-  action varchar(50) // create, update, delete
-  recorded_at timestamp
-
-  version_number integer
-  is_active boolean [default: true]
-
-  is_undone boolean [default: false]
-  undone_at timestamp [null]
-
-}
 
 Ref: Users.id < Projects.user_id [delete: cascade] // One-to-Many: Un user poate avea mai multe proiecte
 Ref: Projects.id < Pages.project_id [delete: cascade] // One-to-Many: Un proiect poate avea mai multe pagini
 Ref: Pages.id < Components.page_id [delete: cascade] // One-to-Many: O pagina poate avea mai multe componente
 Ref: Components.id < Components.parent_id [delete: set null] // One-to-Many (self-referencing): O componenta poate avea mai multe componente copil
-
-Ref: Projects.id < AIInteractions.project_id [delete: cascade] // One-to-Many: Un proiect poate avea mai multe interacțiuni AI
-Ref: Pages.id < AIInteractions.page_id [delete: cascade] // One-to-Many: O pagina poate avea mai multe interactiuni AI
-Ref: Users.id < AIInteractions.user_id [delete: cascade] // One-to-Many: Un user poate avea mai multe interactiuni AI
-
-Ref: Components.id < ComponentAudit.component_id [delete: set null] // One-to-Many: O componenta poate avea mai multe inregistrari de audit
-Ref: Pages.id < ComponentAudit.page_id [delete: cascade] // One-to-Many: O pagina poate avea mai multe inregistrari de audit
-Ref: Users.id < ComponentAudit.user_id [delete: cascade] // One-to-Many: Un user poate avea mai multe inregistrari de audit
-Ref: AIInteractions.id < ComponentAudit.ai_interaction_id [delete: set null] // One-to-Many: O interactiune AI poate avea mai multe inregistrari de audit
